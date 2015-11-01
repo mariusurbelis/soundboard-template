@@ -46,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(this)));
 
         SwitchCompat favSwitch = (SwitchCompat) findViewById(R.id.fav_switch);
+        favSwitch.setChecked(FavStore.getInstance().getShowFavorites());
+        if (favSwitch.isChecked()) {
+            ((SoundAdapter) grid.getAdapter()).onlyShowFavorites();
+        } else {
+            ((SoundAdapter) grid.getAdapter()).showAllSounds(MainActivity.this);
+        }
         favSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ((SoundAdapter) grid.getAdapter()).showAllSounds(MainActivity.this);
                 }
+                FavStore.getInstance().setShowFavorites(isChecked);
             }
         });
     }

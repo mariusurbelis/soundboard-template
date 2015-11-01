@@ -28,4 +28,12 @@ public class FavStore {
     public boolean isSoundFavorited(String soundName) {
         return prefs.getBoolean(soundName, false);
     }
+
+    public void setShowFavorites(boolean showFavorites) {
+        prefs.edit().putBoolean("switch", showFavorites).apply();
+    }
+
+    public boolean getShowFavorites() {
+        return prefs.getBoolean("switch", false);
+    }
 }
