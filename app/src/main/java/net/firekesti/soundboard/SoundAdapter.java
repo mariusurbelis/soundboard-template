@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
@@ -35,6 +36,19 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
                 EventBus.getDefault().post(sounds[position]);
             }
         });
+
+        boolean isFavorite = sounds[position].getFavorite();
+        holder.favButton.setImageResource(isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable
+                .ic_favorite_outline_white_24dp);
+        holder.favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean newFavStatus = !sounds[position].getFavorite();
+                sounds[position].setFavorite(newFavStatus);
+                ((ImageButton) v).setImageResource(newFavStatus ? R.drawable.ic_favorite_white_24dp : R.drawable
+                        .ic_favorite_outline_white_24dp);
+            }
+        });
     }
 
     @Override
@@ -43,12 +57,13 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         public TextView title;
+        public ImageButton favButton;
 
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.title);
+            favButton = (ImageButton) v.findViewById(R.id.fav_button);
         }
     }
 }

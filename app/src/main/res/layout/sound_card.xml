@@ -6,19 +6,33 @@
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_margin="8dp"
-    android:padding="16dp"
     app:cardBackgroundColor="@color/colorAccent"
     app:cardCornerRadius="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <ImageButton
+            android:id="@+id/fav_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:contentDescription="@string/fav_desc"
+            android:src="@drawable/ic_favorite_outline_white_24dp"/>
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/fav_button"
+            android:layout_toRightOf="@+id/fav_button"
+            android:layout_centerVertical="true"
+            android:gravity="center"
             android:textColor="@android:color/white"
             tools:text="Title for Sound"/>
     </RelativeLayout>
