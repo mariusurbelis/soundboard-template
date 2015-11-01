@@ -65,6 +65,7 @@ public class SoundPlayer {
     }
 
     public void release() {
+        EventBus.getDefault().unregister(this);
         if (mPlayer != null) {
             mPlayer.release();
             mPlayer = null;
