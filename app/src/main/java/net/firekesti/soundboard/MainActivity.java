@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.csab.soundboard;
+package net.firekesti.soundboard;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,20 +55,5 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         mSoundPlayer.release();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
