@@ -45,8 +45,13 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
             public void onClick(View v) {
                 boolean newFavStatus = !sounds[position].getFavorite();
                 sounds[position].setFavorite(newFavStatus);
-                ((ImageButton) v).setImageResource(newFavStatus ? R.drawable.ic_favorite_white_24dp : R.drawable
-                        .ic_favorite_outline_white_24dp);
+                if (newFavStatus) {
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_white_24dp);
+                    v.setContentDescription(v.getContext().getString(R.string.fav_desc));
+                } else {
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_outline_white_24dp);
+                    v.setContentDescription(v.getContext().getString(R.string.not_fav_desc));
+                }
             }
         });
     }

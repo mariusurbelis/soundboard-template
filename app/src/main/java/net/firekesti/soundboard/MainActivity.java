@@ -20,7 +20,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.widget.CompoundButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,9 +41,21 @@ public class MainActivity extends AppCompatActivity {
         FavStore.init(getPreferences(Context.MODE_PRIVATE));
         soundPlayer = new SoundPlayer(this);
 
-        RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
+        final RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
         grid.setLayoutManager(new GridLayoutManager(this, 2));
-        grid.setAdapter(new SoundAdapter(SoundStore.getSounds(this)));
+        grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(this)));
+
+        SwitchCompat favSwitch = (SwitchCompat) findViewById(R.id.fav_switch);
+        favSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    grid.setAdapter(new SoundAdapter(SoundStore.getFavoriteSounds(MainActivity.this)));
+                } else {
+                    grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(MainActivity.this)));
+                }
+            }
+        });
     }
 
     @Override

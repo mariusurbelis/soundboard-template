@@ -19,9 +19,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 
+import java.util.ArrayList;
+
 public abstract class SoundStore {
 
-    public static Sound[] getSounds(Context context) {
+    public static Sound[] getAllSounds(Context context) {
         Resources res = context.getApplicationContext().getResources();
 
         TypedArray labels = res.obtainTypedArray(R.array.labels);
@@ -39,4 +41,24 @@ public abstract class SoundStore {
         return sounds;
     }
 
+    public static Sound[] getFavoriteSounds(Context context) {
+        Resources res = context.getApplicationContext().getResources();
+
+        TypedArray labels = res.obtainTypedArray(R.array.labels);
+        TypedArray ids = res.obtainTypedArray(R.array.ids);
+
+        ArrayList<Sound> sounds = new ArrayList<>();
+
+        for (int i = 0; i < labels.length(); i++) {
+            Sound sound = new Sound(labels.getString(i), ids.getResourceId(i, -1));
+            if (sound.getFavorite()) {
+                sounds.add(sound);
+            }
+        }
+
+        labels.recycle();
+        ids.recycle();
+
+        return sounds.toArray(new Sound[sounds.size()]);
+    }
 }
