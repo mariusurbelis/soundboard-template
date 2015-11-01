@@ -1,6 +1,7 @@
 package net.firekesti.soundboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,21 +18,24 @@ import de.greenrobot.event.EventBus;
  */
 public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> {
     private ArrayList<Sound> sounds;
+    private boolean shouldShowFavsOnly = false;
 
     public SoundAdapter(ArrayList<Sound> soundArray) {
         sounds = soundArray;
     }
 
     public void onlyShowFavorites() {
+        shouldShowFavsOnly = true;
         for (Sound sound : new ArrayList<>(sounds)) {
-          if (!sound.getFavorite()) {
-              notifyItemRemoved(sounds.indexOf(sound));
-              sounds.remove(sound);
-          }
+            if (!sound.getFavorite()) {
+                notifyItemRemoved(sounds.indexOf(sound));
+                sounds.remove(sound);
+            }
         }
     }
 
     public void showAllSounds(Context context) {
+        shouldShowFavsOnly = false;
         sounds = SoundStore.getAllSounds(context);
         notifyDataSetChanged();
     }
@@ -44,12 +48,19 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.title.setText(sounds.get(position).getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            public void onEvent(String done) {
+                holder.setNormalColors();
+                EventBus.getDefault().unregister(this);
+            }
+
             @Override
             public void onClick(View view) {
+                holder.setPlayingColors();
+                EventBus.getDefault().register(this);
                 EventBus.getDefault().post(sounds.get(holder.getAdapterPosition()));
             }
         });
@@ -57,17 +68,23 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
         boolean isFavorite = sounds.get(position).getFavorite();
         holder.favButton.setImageResource(isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable
                 .ic_favorite_outline_white_24dp);
+
         holder.favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean newFavStatus = !sounds.get(position).getFavorite();
-                sounds.get(position).setFavorite(newFavStatus);
+                boolean newFavStatus = !sounds.get(holder.getAdapterPosition()).getFavorite();
+                sounds.get(holder.getAdapterPosition()).setFavorite(newFavStatus);
                 if (newFavStatus) {
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorite_white_24dp);
                     v.setContentDescription(v.getContext().getString(R.string.fav_desc));
                 } else {
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorite_outline_white_24dp);
                     v.setContentDescription(v.getContext().getString(R.string.not_fav_desc));
+                }
+                if (shouldShowFavsOnly) {
+                    // Remove from the list.
+                    sounds.remove(sounds.get(holder.getAdapterPosition()));
+                    notifyItemRemoved(holder.getAdapterPosition());
                 }
             }
         });
@@ -81,11 +98,25 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageButton favButton;
+        private int accentColor;
 
         public ViewHolder(View v) {
             super(v);
             title = (TextView) v.findViewById(R.id.title);
             favButton = (ImageButton) v.findViewById(R.id.fav_button);
+            accentColor = itemView.getContext().getResources().getColor(R.color.colorAccent);
+        }
+
+        public void setNormalColors() {
+            itemView.setBackgroundColor(accentColor);
+            title.setTextColor(Color.WHITE);
+            favButton.clearColorFilter();
+        }
+
+        public void setPlayingColors() {
+            itemView.setBackgroundColor(Color.WHITE);
+            title.setTextColor(accentColor);
+            favButton.setColorFilter(accentColor);
         }
     }
 }

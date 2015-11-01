@@ -62,6 +62,12 @@ public class SoundPlayer {
             mPlayer = MediaPlayer.create(mContext, resource);
         }
         mPlayer.start();
+        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                EventBus.getDefault().post("Done");
+            }
+        });
     }
 
     public void release() {
