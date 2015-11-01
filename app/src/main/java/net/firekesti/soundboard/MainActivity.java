@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         soundPlayer = new SoundPlayer(this);
 
         final RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
-        grid.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        grid.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_cols),
+                StaggeredGridLayoutManager.VERTICAL));
         grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(this)));
 
         SwitchCompat favSwitch = (SwitchCompat) findViewById(R.id.fav_switch);
