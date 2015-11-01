@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.widget.CompoundButton;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         soundPlayer = new SoundPlayer(this);
 
         final RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
-        grid.setLayoutManager(new GridLayoutManager(this, 2));
+        grid.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(this)));
 
         SwitchCompat favSwitch = (SwitchCompat) findViewById(R.id.fav_switch);
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    grid.setAdapter(new SoundAdapter(SoundStore.getFavoriteSounds(MainActivity.this)));
+                    ((SoundAdapter) grid.getAdapter()).onlyShowFavorites();
                 } else {
-                    grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(MainActivity.this)));
+                    ((SoundAdapter) grid.getAdapter()).showAllSounds(MainActivity.this);
                 }
             }
         });

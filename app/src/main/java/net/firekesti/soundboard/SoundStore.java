@@ -23,16 +23,16 @@ import java.util.ArrayList;
 
 public abstract class SoundStore {
 
-    public static Sound[] getAllSounds(Context context) {
+    public static ArrayList<Sound> getAllSounds(Context context) {
         Resources res = context.getApplicationContext().getResources();
 
         TypedArray labels = res.obtainTypedArray(R.array.labels);
         TypedArray ids = res.obtainTypedArray(R.array.ids);
 
-        Sound[] sounds = new Sound[labels.length()];
+        ArrayList<Sound> sounds = new ArrayList<>();
 
-        for (int i = 0; i < sounds.length; i++) {
-            sounds[i] = new Sound(labels.getString(i), ids.getResourceId(i, -1));
+        for (int i = 0; i < labels.length(); i++) {
+            sounds.add(new Sound(labels.getString(i), ids.getResourceId(i, -1)));
         }
 
         labels.recycle();
@@ -41,7 +41,7 @@ public abstract class SoundStore {
         return sounds;
     }
 
-    public static Sound[] getFavoriteSounds(Context context) {
+    public static ArrayList<Sound> getFavoriteSounds(Context context) {
         Resources res = context.getApplicationContext().getResources();
 
         TypedArray labels = res.obtainTypedArray(R.array.labels);
@@ -59,6 +59,6 @@ public abstract class SoundStore {
         labels.recycle();
         ids.recycle();
 
-        return sounds.toArray(new Sound[sounds.size()]);
+        return sounds;
     }
 }
