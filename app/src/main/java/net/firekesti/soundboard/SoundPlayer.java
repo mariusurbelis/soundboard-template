@@ -22,6 +22,8 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import de.greenrobot.event.EventBus;
+
 
 public class SoundPlayer {
 
@@ -31,7 +33,12 @@ public class SoundPlayer {
     private static final String TAG = "SoundPlayer";
 
     public SoundPlayer(Context context) {
+        EventBus.getDefault().register(this);
         this.mContext = context.getApplicationContext();
+    }
+
+    public void onEvent(Sound sound) {
+        playSound(sound);
     }
 
     public void playSound(Sound sound) {
@@ -42,8 +49,7 @@ public class SoundPlayer {
             mPlayer.reset();
 
             try {
-                AssetFileDescriptor afd =
-                        mContext.getResources().openRawResourceFd(resource);
+                AssetFileDescriptor afd = mContext.getResources().openRawResourceFd(resource);
                 if (afd == null)
                     return;
                 mPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());

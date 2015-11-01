@@ -17,32 +17,32 @@ package net.firekesti.soundboard;
 
 public class Sound {
 
-    private String mName;
-    private int mResourceId;
+    private String name;
+    private int resourceId;
 
     public Sound(String name, int resourceId) {
-        this.mName = name;
-        this.mResourceId = resourceId;
+        this.name = name;
+        this.resourceId = resourceId;
     }
 
     public int getResourceId() {
-        return mResourceId;
+        return resourceId;
     }
 
     public void setResourceId(int resourceId) {
-        this.mResourceId = resourceId;
+        this.resourceId = resourceId;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String name) {
-        this.mName = name;
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return mName;
+        return name;
     }
 }

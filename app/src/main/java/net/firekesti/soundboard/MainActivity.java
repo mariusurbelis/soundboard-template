@@ -17,43 +17,28 @@ package net.firekesti.soundboard;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SoundPlayer mSoundPlayer;
+    private SoundPlayer soundPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSoundPlayer = new SoundPlayer(this);
-        Sound[] soundArray = SoundStore.getSounds(this);
+        soundPlayer = new SoundPlayer(this);
 
-        GridView gridView = (GridView) findViewById(R.id.gridView);
-
-        final ArrayAdapter<Sound> adapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, soundArray);
-
-        gridView.setAdapter(adapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Sound sound = (Sound) parent.getItemAtPosition(position);
-                mSoundPlayer.playSound(sound);
-            }
-        });
+        RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
+        grid.setLayoutManager(new GridLayoutManager(this, 2));
+        grid.setAdapter(new SoundAdapter(SoundStore.getSounds(this)));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mSoundPlayer.release();
+        soundPlayer.release();
     }
 }
