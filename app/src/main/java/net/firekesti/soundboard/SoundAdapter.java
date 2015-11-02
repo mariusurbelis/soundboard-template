@@ -60,6 +60,9 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 holder.setPlayingColors();
+                if (EventBus.getDefault().isRegistered(this)) {
+                    return;
+                }
                 EventBus.getDefault().register(this);
                 EventBus.getDefault().post(sounds.get(holder.getAdapterPosition()));
             }
