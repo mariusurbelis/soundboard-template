@@ -2,6 +2,7 @@ package net.firekesti.soundboard;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,13 +112,13 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundAdapter.ViewHolder> 
         }
 
         public void setNormalColors() {
-            itemView.setBackgroundColor(accentColor);
+            ((CardView) itemView).setCardBackgroundColor(accentColor);
             title.setTextColor(Color.WHITE);
             favButton.clearColorFilter();
         }
 
         public void setPlayingColors() {
-            itemView.setBackgroundColor(Color.WHITE);
+            ((CardView) itemView).setCardBackgroundColor(Color.WHITE);
             title.setTextColor(accentColor);
             favButton.setColorFilter(accentColor);
         }
