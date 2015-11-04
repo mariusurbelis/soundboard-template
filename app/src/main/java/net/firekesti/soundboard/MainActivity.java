@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
 
         FavStore.init(getPreferences(Context.MODE_PRIVATE));
-        soundPlayer = new SoundPlayer(this);
 
         final RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
         grid.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_cols),
@@ -67,8 +66,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+        soundPlayer = new SoundPlayer(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         soundPlayer.release();
     }
 }
