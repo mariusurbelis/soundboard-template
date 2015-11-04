@@ -24,6 +24,7 @@
         <item>We Need Fuckin Help Buddy</item>
         <item>That Is Still Good Meat On That Fuckin Fish Jay</item>
         <item>Am I Lyin\'??</item>
+        <item>Are You Shittin Me? That\'s the Hook You Come?</item>
     </string-array>
 
     <integer-array name="ids">
@@ -50,5 +51,6 @@
         <item>@raw/r21weneedfuckinhelpbuddy</item>
         <item>@raw/r22stillgoodmeat</item>
         <item>@raw/r23amilyin</item>
+        <item>@raw/r24thatsthehookyoucome</item>
     </integer-array>
 </resources>
