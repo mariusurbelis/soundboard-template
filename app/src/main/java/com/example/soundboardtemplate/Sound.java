@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.firekesti.soundboard;
+package com.example.soundboardtemplate;
 
 public class Sound {
 
@@ -31,16 +31,8 @@ public class Sound {
         return resourceId;
     }
 
-    public void setResourceId(int resourceId) {
-        this.resourceId = resourceId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public boolean getFavorite() {

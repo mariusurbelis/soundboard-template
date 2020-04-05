@@ -1,4 +1,4 @@
-package net.firekesti.soundboard;
+package com.example.soundboardtemplate;
 
 import android.content.SharedPreferences;
 

@@ -13,55 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.firekesti.soundboard;
+package com.example.soundboardtemplate;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
-import android.widget.CompoundButton;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private SoundPlayer soundPlayer;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setLogo(R.mipmap.ic_launcher);
         toolbar.setTitle("");
 
         FavStore.init(getPreferences(Context.MODE_PRIVATE));
 
-        final RecyclerView grid = (RecyclerView) findViewById(R.id.grid_view);
+        final RecyclerView grid = findViewById(R.id.grid_view);
         grid.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_cols),
                 StaggeredGridLayoutManager.VERTICAL));
         grid.setAdapter(new SoundAdapter(SoundStore.getAllSounds(this)));
 
-        SwitchCompat favSwitch = (SwitchCompat) findViewById(R.id.fav_switch);
+        SwitchCompat favSwitch = findViewById(R.id.fav_switch);
         favSwitch.setChecked(FavStore.getInstance().getShowFavorites());
         if (favSwitch.isChecked()) {
-            ((SoundAdapter) grid.getAdapter()).onlyShowFavorites();
+            ((SoundAdapter) Objects.requireNonNull(grid.getAdapter())).onlyShowFavorites();
         } else {
-            ((SoundAdapter) grid.getAdapter()).showAllSounds(MainActivity.this);
+            ((SoundAdapter) Objects.requireNonNull(grid.getAdapter())).showAllSounds(MainActivity.this);
         }
-        favSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    ((SoundAdapter) grid.getAdapter()).onlyShowFavorites();
-                } else {
-                    ((SoundAdapter) grid.getAdapter()).showAllSounds(MainActivity.this);
-                }
-                FavStore.getInstance().setShowFavorites(isChecked);
+        favSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                ((SoundAdapter) grid.getAdapter()).onlyShowFavorites();
+            } else {
+                ((SoundAdapter) grid.getAdapter()).showAllSounds(MainActivity.this);
             }
+            FavStore.getInstance().setShowFavorites(isChecked);
         });
     }
 
