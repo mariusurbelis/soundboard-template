@@ -26,7 +26,7 @@ import java.util.Map;
 public abstract class SoundStore {
 
     // Configure the text you want replaced in the titles
-    public static Map<String, String> replacementMap = new HashMap<String, String>() {{
+    private static Map<String, String> replacementMap = new HashMap<String, String>() {{
         put("im", "i'm");
         // etc
     }};
